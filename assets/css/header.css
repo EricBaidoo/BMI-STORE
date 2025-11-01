@@ -1,0 +1,199 @@
+/* Header specific styles for a professional navbar */
+.site-header .navbar {
+  padding: 0.6rem 0;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+  background-color: #071427;
+  color: #ffffff;
+  margin-bottom: 0 !important;
+  border-bottom: none;
+}
+
+.site-header {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: none;
+}
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* remove decorative background so logo sits alone */
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+/* logo image sizing inside brand-mark */
+.brand-mark .brand-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 0;
+  display: block;
+}
+/* If the logo is dark on the deep header, invert it for contrast */
+.site-header .brand-mark .brand-logo {
+  filter: invert(1) brightness(1.2);
+}
+.brand-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffffff;
+}
+.brand-tagline {
+  line-height: 1;
+  color: rgba(255,255,255,0.75);
+}
+.header-search {
+  min-width: 220px;
+  max-width: 520px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.header-search::placeholder { color: rgba(255,255,255,0.6); }
+.cart-badge {
+  font-size: 0.65rem;
+  padding: 0.35rem 0.5rem;
+  transform: translate(10%, -30%);
+  /* default badge style (will be tuned for visibility on accent button) */
+  background-color: #071427; /* dark badge to contrast warm button */
+  color: #fff;
+}
+
+/* Cart button styles for deep header */
+.cart-btn {
+  background-color: #ffc107; /* warm accent */
+  color: #071427; /* dark text on warm bg */
+  border: none;
+  padding: 0.45rem 0.8rem;
+  font-weight: 600;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 18px rgba(255,193,7,0.12);
+  transition: transform 120ms ease, filter 120ms ease;
+}
+.cart-btn:hover, .cart-btn:focus {
+  transform: translateY(-1px);
+  filter: brightness(0.98);
+  text-decoration: none;
+}
+
+/* ensure the icon inside the button is visible */
+.cart-btn .bi { font-size: 1.05rem; }
+@media (max-width: 767px) {
+  .header-search { min-width: 120px; }
+  .brand-tagline { display: none; }
+}
+
+/* subtle focus ring for accessibility */
+.navbar .form-control:focus {
+  box-shadow: 0 6px 20px rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* small visual polish for links */
+.navbar .nav-link {
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+.navbar .nav-link:hover {
+  color: #ffffff;
+}
+
+/* Remove default text-decoration on links and on hover */
+.navbar .nav-link,
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  text-decoration: none !important;
+}
+
+/* If the active link has the decorative underline, keep it normally but hide it on hover if requested */
+.navbar .nav-link.active:hover::after {
+  display: none;
+}
+
+/* Center the main nav on wide screens */
+.navbar-nav-centered {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Ensure collapse area centers its contents */
+.navbar-collapse.justify-content-center {
+  justify-content: center !important;
+}
+
+/* Header actions (search + cart) positioned to the right on large screens */
+.header-actions .header-search { min-width: 220px; }
+
+@media (max-width: 991px) {
+  /* On smaller screens, make the search full-width when visible */
+  .header-search { min-width: 0; width: 100%; }
+  .header-actions { display: none !important; }
+}
+
+/* sticky subtle background when scrolled */
+.navbar.sticky-top {
+  background-color: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(11,34,64,0.06);
+}
+
+/* Skip link visible on keyboard focus */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.visually-hidden-focusable:focus, .skip-link:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #0b2140;
+  color: #fff;
+  z-index: 1050;
+  border-radius: 4px;
+}
+
+/* active link underline */
+.navbar .nav-link.active {
+  color: #ffffff;
+  position: relative;
+}
+.navbar .nav-link.active::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  border-radius: 2px;
+}
+
+/* Improve search focus */
+.header-search {
+  border-radius: 999px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.header-search:focus {
+  box-shadow: 0 6px 20px rgba(255,255,255,0.08);
+}
+
+/* Slightly tighten center nav spacing */
+.navbar-nav-centered .nav-link { padding: 0.5rem 0.75rem; }
+/* Site header styles */
+.navbar-brand { font-weight: 700; }
+.navbar { box-shadow: 0 1px 0 rgba(0,0,0,0.04); }

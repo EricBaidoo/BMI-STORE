@@ -1,0 +1,49 @@
+/* Site footer styles (deep/navy theme) */
+.site-footer { background: var(--color-primary); color: #fff; }
+.site-footer a { color: rgba(255,255,255,0.9); }
+.site-footer .text-muted-light { color: rgba(255,255,255,0.75); }
+.site-footer .footer-link { display:block; margin-bottom: .45rem; color: rgba(255,255,255,0.9); text-decoration: none; }
+.site-footer .footer-link:hover { color: #ffffff; text-decoration: underline; }
+.site-footer .footer-logo { width:44px; height:auto; }
+.site-footer .btn-accent { background:#ffc107; color:#071427; border:none; padding:.45rem .65rem; border-radius:8px; font-weight:600; }
+.site-footer .footer-subscribe .form-control { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color:#fff; }
+.site-footer .footer-subscribe .form-control::placeholder { color: rgba(255,255,255,0.6); }
+.site-footer .social-link { color: rgba(255,255,255,0.9); font-size:1.05rem; }
+.site-footer .social-link:hover { color: #ffc107; }
+.site-footer { position: relative; border-top: 2px solid rgba(255,255,255,0.22); box-shadow: 0 -1px 0 rgba(255,255,255,0.02) inset; }
+
+/* Ensure a visible separator even if colors/backgrounds overlap */
+.site-footer::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -2px; /* sits just above the footer edge */
+	height: 2px;
+	background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.25));
+	pointer-events: none;
+	z-index: 2;
+}
+
+/* improved spacing and layout */
+.site-footer .container { max-width: var(--max-width); }
+.site-footer h6 { font-weight:700; margin-bottom: .5rem; }
+.site-footer .list-unstyled { padding-left: 0; }
+.site-footer .footer-subscribe { gap: .5rem; }
+.site-footer .payment-icons { color: rgba(255,255,255,0.75); font-size: .9rem; }
+
+/* small responsive tweaks */
+@media (max-width: 767px) {
+	.site-footer .footer-subscribe { flex-direction: column; gap: .5rem; }
+	.site-footer .footer-subscribe .form-control { width:100%; }
+	.site-footer .btn-accent { width:100%; }
+	.site-footer .payment-icons { display:block; margin-top:.75rem; }
+}
+
+/* explicit separator element placed before the footer */
+.footer-sep {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.25));
+  margin-bottom: 1rem;
+}

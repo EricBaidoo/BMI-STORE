@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "slug": "the-great-gatsby",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "price": 12.99,
+    "stock": 10,
+    "cover": "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=600&h=900&fit=crop",
+    "category": "Fiction",
+  "description": "A portrait of the Jazz Age in all of its decadence and excess. F. Scott Fitzgerald’s classic novel explores the illusions and disillusionments of the American Dream through the mysterious Jay Gatsby and his lavish parties. With lyrical prose and unforgettable characters, this book captures the spirit, glamour, and heartbreak of 1920s America.",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "slug": "to-kill-a-mockingbird",
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "price": 9.99,
+    "stock": 5,
+    "cover": "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=600&h=900&fit=crop",
+    "category": "Classics",
+  "description": "A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age. Harper Lee’s Pulitzer Prize-winning novel delves into themes of racial injustice, moral growth, and compassion in the Deep South. Through the eyes of young Scout Finch, readers experience a powerful story of empathy, courage, and the enduring fight for justice.",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "slug": "clean-code",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "price": 29.99,
+    "stock": 4,
+    "cover": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&h=900&fit=crop",
+    "category": "Programming",
+  "description": "A Handbook of Agile Software Craftsmanship — principles, patterns, and best practices. Robert C. Martin’s essential guide teaches developers how to write clean, maintainable code. With practical examples and timeless advice, this book is a must-read for anyone seeking to elevate their programming skills and build robust software.",
+    "featured": true
+  },
+  {
+    "id": 4,
+    "slug": "atomic-habits",
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "price": 16.99,
+    "stock": 8,
+    "cover": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=900&fit=crop",
+    "category": "Self-help",
+  "description": "An easy & proven way to build good habits & break bad ones. James Clear reveals the science behind habit formation and provides actionable strategies for making small changes that lead to remarkable results. This transformative book empowers readers to reshape their lives, one habit at a time.",
+    "featured": true
+  },
+  {
+    "id": 5,
+    "slug": "the-purpose-driven-life",
+    "title": "The Purpose Driven Life",
+    "author": "Rick Warren",
+    "price": 11.99,
+    "stock": 12,
+    "cover": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=900&fit=crop",
+    "category": "Christian",
+  "description": "What on earth am I here for? — spiritual guidance for living purposefully. Rick Warren’s bestselling book offers a 40-day spiritual journey, helping readers discover their purpose and deepen their relationship with God. With practical wisdom and inspiring stories, it’s a roadmap for a more meaningful, faith-filled life.",
+    "featured": true
+  },
+  {
+    "id": 6,
+    "slug": "the-ology-of-god",
+    "title": "Theology of God",
+    "author": "John Doe",
+    "price": 14.5,
+    "stock": 6,
+    "cover": "https://images.unsplash.com/photo-1496232140263-49a5b0b7b3f8?w=600&h=900&fit=crop",
+    "category": "Religion",
+  "description": "Thoughtful reflections on God and faith. This insightful work explores the nature of God, the foundations of Christian belief, and the mysteries of faith. With accessible language and profound insights, it invites readers to deepen their understanding and grow in their spiritual journey.",
+    "featured": true
+  },
+  {
+    "id": 7,
+    "slug": "prayer-and-worship",
+    "title": "Prayer and Worship",
+    "author": "Jane Smith",
+    "price": 10.0,
+    "stock": 7,
+    "cover": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?w=600&h=900&fit=crop",
+    "category": "Christian",
+  "description": "A practical guide to deepening your prayer life. Jane Smith offers step-by-step advice, biblical inspiration, and real-life examples to help readers cultivate a vibrant relationship with God through prayer and worship. This book is an essential companion for anyone seeking spiritual renewal.",
+    "featured": false
+  },
+  {
+    "id": 8,
+    "slug": "stories-of-faith",
+    "title": "Stories of Faith",
+    "author": "Various",
+    "price": 13.25,
+    "stock": 9,
+    "cover": "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&h=900&fit=crop",
+    "category": "Testimony",
+  "description": "Real-life testimonies of faith and transformation. This uplifting collection shares the journeys of individuals whose lives have been changed by faith. Each story is a testament to hope, perseverance, and the power of God’s love to bring about true transformation.",
+    "featured": false
+  }
+]
