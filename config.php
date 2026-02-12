@@ -19,9 +19,9 @@ return [
     ],
     'db_online' => [
         'host' => '127.0.0.1',
-        'name' => 'BOOKSTORE',
-        'user' => 'root',
-        'pass' => 'root',
+        'name' => 'u145148023_bookstore',
+        'user' => 'u145148023_bmi_admin1',
+        'pass' => 'Bmi@2025',
         'port' => 3306
     ],
     // Simple admin credentials for local development only.
