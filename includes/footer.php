@@ -67,8 +67,10 @@
   </div>
 </footer>
 
-<link href="<?= htmlspecialchars($assetPrefix ?? '') ?>/assets/css/footer.css" rel="stylesheet">
+<?php $footerVersion = @filemtime(__DIR__ . '/../assets/css/footer.css') ?: time(); ?>
+<link href="<?= htmlspecialchars($assetPrefix ?? '') ?>/assets/css/footer.css?v=<?= $footerVersion ?>" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?= htmlspecialchars($assetPrefix ?? '') ?>/assets/js/scripts.js"></script>
+<?php $scriptVersion = @filemtime(__DIR__ . '/../assets/js/scripts.js') ?: time(); ?>
+<script src="<?= htmlspecialchars($assetPrefix ?? '') ?>/assets/js/scripts.js?v=<?= $scriptVersion ?>"></script>
 </body>
 </html>

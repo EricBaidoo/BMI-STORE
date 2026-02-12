@@ -52,7 +52,7 @@ function asset_prefix() {
     if (basename($assetPrefix) === 'admin') {
         $assetPrefix = dirname($assetPrefix);
     }
-    if ($assetPrefix === '\\' || $assetPrefix === '.') $assetPrefix = '';
+    if ($assetPrefix === '/' || $assetPrefix === '\\' || $assetPrefix === '.') $assetPrefix = '';
     return $assetPrefix;
 }
 

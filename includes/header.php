@@ -29,15 +29,18 @@ $assetPrefix = asset_prefix();
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><?= htmlspecialchars(site_name()) ?></title>
   <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>">
-  <link href="<?= htmlspecialchars($assetPrefix) ?>/assets/css/styles.css" rel="stylesheet">
+  <?php $stylesVersion = @filemtime(__DIR__ . '/../assets/css/styles.css') ?: time(); ?>
+  <link href="<?= htmlspecialchars($assetPrefix) ?>/assets/css/styles.css?v=<?= $stylesVersion ?>" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="<?= htmlspecialchars($assetPrefix) ?>/assets/css/header.css" rel="stylesheet">
+  <?php $headerVersion = @filemtime(__DIR__ . '/../assets/css/header.css') ?: time(); ?>
+  <link href="<?= htmlspecialchars($assetPrefix) ?>/assets/css/header.css?v=<?= $headerVersion ?>" rel="stylesheet">
   <?php
   // Include page CSS if present
   $possiblePath = __DIR__ . '/../assets/css/' . $pageCss;
   if (!empty($pageCss) && file_exists($possiblePath)) {
-    $pageHref = htmlspecialchars($assetPrefix) . '/assets/css/' . htmlspecialchars($pageCss);
+    $pageVersion = @filemtime($possiblePath) ?: time();
+    $pageHref = htmlspecialchars($assetPrefix) . '/assets/css/' . htmlspecialchars($pageCss) . '?v=' . $pageVersion;
     echo "<link href=\"{$pageHref}\" rel=\"stylesheet\">\n";
   }
   ?>
