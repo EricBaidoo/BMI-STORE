@@ -26,32 +26,7 @@ require_once __DIR__ . '/includes/header.php';
           </div>
         </div>
         <div class="home-hero-visual">
-          <div id="heroImageCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#heroImageCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#heroImageCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#heroImageCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="assets/images/477983923_1258677485680214_2499823974197020767_n.jpg" alt="Book collection" loading="lazy">
-              </div>
-              <div class="carousel-item">
-                <img src="assets/images/41fSSwll0vL._SY445_SX342_.jpg" alt="Featured book" loading="lazy">
-              </div>
-              <div class="carousel-item">
-                <img src="assets/images/618UBIbrB-L._UF1000,1000_QL80_.jpg" alt="Inspiration books" loading="lazy">
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroImageCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroImageCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
+          <img src="assets/images/477983923_1258677485680214_2499823974197020767_n.jpg" alt="Book collection" loading="lazy">
         </div>
       </div>
     </div>

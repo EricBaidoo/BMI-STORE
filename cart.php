@@ -1,144 +1,102 @@
-
 <?php
 require_once __DIR__ . '/includes/functions.php';
+$page_css = 'cart.css';
+
 $is_ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// update quantities
-	foreach ($_POST['qty'] ?? [] as $id => $q) {
-		$q = max(0, (int)$q);
-		if ($q === 0) cart_remove($id);
-		else $_SESSION['cart'][$id] = $q;
-	}
-			if ($is_ajax) {
-					// Return only the cart table and summary for AJAX
-					ob_start();
-					?>
-					<table class="table cart-table align-middle">
-						<thead>
-							<tr>
-								<th>Book</th>
-								<th>Price</th>
-								<th>Qty</th>
-								<th>Subtotal</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach (cart_items() as $it): $b = $it['book']; ?>
-							<tr>
-								<td>
-									<div class="fw-bold"><?= htmlspecialchars($b['title']) ?></div>
-									<div class="text-muted small">by <?= htmlspecialchars($b['author']) ?></div>
-								</td>
-								<td><?= format_price($b['price']) ?></td>
-								<td style="max-width:90px">
-									<input type="number" name="qty[<?= $b['id'] ?>]" value="<?= $it['qty'] ?>" min="0" class="form-control cart-qty-input">
-								</td>
-								<td><?= format_price($b['price'] * $it['qty']) ?></td>
-							</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-					<div class="cart-summary d-flex align-items-center gap-3">
-						<span class="cart-total-label">Total:</span>
-						<span class="cart-total-value fw-bold"><?= format_price(cart_total()) ?></span>
-						<a class="btn btn-gradient ms-2" href="checkout.php">Checkout</a>
-					</div>
-					<?php
-					$html = ob_get_clean();
-					echo $html;
-					exit;
-			} else {
-					header('Location: cart.php');
-					exit;
-			}
+  foreach ($_POST['qty'] ?? [] as $id => $q) {
+    $q = max(0, (int)$q);
+    if ($q === 0) {
+      cart_remove($id);
+    } else {
+      $_SESSION['cart'][$id] = $q;
+    }
+  }
+  
+  if (!$is_ajax) {
+    header('Location: cart.php');
+    exit;
+  }
 }
+
 $items = cart_items();
+$fallbackCover = 'assets/images/books%20main.png';
+
+require_once __DIR__ . '/includes/header.php';
 ?>
-<?php require_once __DIR__ . '/includes/header.php'; ?>
 
-<div class="cart-bg py-5">
-	<div class="cart-container container">
+<main class="cart-page">
+  <section class="cart-header">
+    <div class="container">
+      <h1>Shopping Cart</h1>
+    </div>
+  </section>
 
-		<?php
-		require_once __DIR__ . '/includes/functions.php';
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		    // update quantities
-		    foreach ($_POST['qty'] ?? [] as $id => $q) {
-		        $q = max(0, (int)$q);
-		        if ($q === 0) cart_remove($id);
-		        else $_SESSION['cart'][$id] = $q;
-		    }
-		    header('Location: cart.php');
-		    exit;
-		}
-		$items = cart_items();
-		?>
-		<?php require_once __DIR__ . '/includes/header.php'; ?>
+  <section class="cart-content">
+    <div class="container">
+      <?php if (empty($items)): ?>
+        <div class="cart-empty">
+          <div class="cart-empty-content">
+            <i class="bi bi-cart-x"></i>
+            <h2>Your cart is empty</h2>
+            <p>Browse our collection and add some books to your cart.</p>
+            <a href="books.php" class="btn cart-continue-btn">Browse Books</a>
+          </div>
+        </div>
+      <?php else: ?>
+        <div class="cart-grid">
+          <div class="cart-items-section">
+            <form method="post" id="cartForm">
+              <?php foreach ($items as $it): 
+                $b = $it['book'];
+                $cover = !empty($b['cover']) ? $b['cover'] : $fallbackCover;
+                $coverUrl = resolve_cover_url($cover);
+              ?>
+                <div class="cart-item">
+                  <div class="cart-item-image">
+                    <img src="<?= htmlspecialchars($coverUrl) ?>" alt="<?= htmlspecialchars($b['title']) ?>">
+                  </div>
+                  <div class="cart-item-details">
+                    <h3 class="cart-item-title"><?= htmlspecialchars($b['title']) ?></h3>
+                    <p class="cart-item-author">by <?= htmlspecialchars($b['author']) ?></p>
+                    <p class="cart-item-price"><?= format_price($b['price']) ?></p>
+                  </div>
+                  <div class="cart-item-quantity">
+                    <label for="qty_<?= $b['id'] ?>">Qty:</label>
+                    <select name="qty[<?= $b['id'] ?>]" id="qty_<?= $b['id'] ?>" class="cart-qty-select" onchange="document.getElementById('cartForm').submit()">
+                      <?php for ($i = 0; $i <= 10; $i++): ?>
+                        <option value="<?= $i ?>"<?= $it['qty'] === $i ? ' selected' : '' ?>><?= $i === 0 ? 'Delete' : $i ?></option>
+                      <?php endfor; ?>
+                    </select>
+                  </div>
+                  <div class="cart-item-subtotal">
+                    <?= format_price($b['price'] * $it['qty']) ?>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </form>
+          </div>
 
-		<div class="cart-bg py-5">
-		  <div class="cart-container container">
-		    <div class="row justify-content-center">
-		      <div class="col-12 col-lg-10">
-		        <div class="cart-card shadow-lg">
-		          <h1 class="cart-title mb-4">Your Cart</h1>
-		          <?php if (empty($items)): ?>
-		            <div class="empty-cart text-center p-5">
-		              <p class="lead mb-3">Your cart is empty.</p>
-		              <a href="books.php" class="btn btn-gradient">Browse books</a>
-		            </div>
-		          <?php else: ?>
-		            <form method="post">
-		              <div class="table-responsive mb-4">
-		                <table class="table cart-table align-middle">
-		                  <thead>
-		                    <tr>
-		                      <th>Book</th>
-		                      <th>Price</th>
-		                      <th>Qty</th>
-		                      <th>Subtotal</th>
-		                    </tr>
-		                  </thead>
-		                  <tbody>
-		                    <?php foreach ($items as $it): $b = $it['book']; ?>
-		                    <tr>
-		                      <td>
-		                        <div class="fw-bold"><?= htmlspecialchars($b['title']) ?></div>
-		                        <div class="text-muted small">by <?= htmlspecialchars($b['author']) ?></div>
-		                      </td>
-		                      <td><?= format_price($b['price']) ?></td>
-		                      <td style="max-width:90px">
-		                        <input type="number" name="qty[<?= $b['id'] ?>]" value="<?= $it['qty'] ?>" min="0" class="form-control cart-qty-input">
-		                      </td>
-		                      <td><?= format_price($b['price'] * $it['qty']) ?></td>
-		                    </tr>
-		                    <?php endforeach; ?>
-		                  </tbody>
-		                </table>
-		              </div>
-		              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-		                <a class="btn btn-secondary" href="books.php">Continue shopping</a>
-		                <div class="cart-summary d-flex align-items-center gap-3">
-		                  <span class="cart-total-label">Total:</span>
-		                  <span class="cart-total-value fw-bold"><?= format_price(cart_total()) ?></span>
-		                  <a class="btn btn-gradient ms-2" href="checkout.php">Checkout</a>
-		                  <button type="submit" class="btn btn-outline-danger ms-2">Update cart</button>
-		                </div>
-		              </div>
-		            </form>
-		          <?php endif; ?>
-		        </div>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+          <div class="cart-summary-section">
+            <div class="cart-summary">
+              <h2>Order Summary</h2>
+              <div class="cart-summary-row">
+                <span>Subtotal (<?= count($items) ?> <?= count($items) === 1 ? 'item' : 'items' ?>):</span>
+                <span><?= format_price(cart_total()) ?></span>
+              </div>
+              <div class="cart-summary-total">
+                <span>Total:</span>
+                <span><?= format_price(cart_total()) ?></span>
+              </div>
+              <a href="checkout.php" class="btn cart-checkout-btn">Proceed to Checkout</a>
+              <a href="books.php" class="btn cart-continue-link">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
+    </div>
+  </section>
+</main>
 
-		<?php require_once __DIR__ . '/includes/footer.php'; ?>
-																if (newTable && newSummary) {
-
-																	document.querySelector('.cart-table').innerHTML = newTable.innerHTML;
-
-																	document.querySelector('.cart-summary').innerHTML = newSummary.innerHTML;
-
-																} else {
-
-																	window.location.reload(); // fallback
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -40,6 +40,6 @@ return [
         'geo_timeout' => 0.8,
         'rate_timeout' => 1.0
     ],
-    // Secret key for BMI Pay HMAC signing. Change this to a strong random value!
-    'bmipay_secret' => 'REPLACE_WITH_A_RANDOM_SECRET_KEY_1234567890',
+    // Secret key for BMI Pay HMAC signing. Must match BMIPAY's BMI_PAY_SECRET constant
+    'bmipay_secret' => 'mevaGieB1sMI/lThG2Ztwl1vM/M5HnPDjdX/UWHsHZd9SxFBjyd5UaqokXN71xrV',
 ];

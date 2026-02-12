@@ -1,78 +1,111 @@
-
 <?php
 require_once __DIR__ . '/includes/functions.php';
+$page_css = 'checkout.css';
+
 $items = cart_items();
 if (empty($items)) {
   header('Location: cart.php');
   exit;
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // Store order in session for reference
   $_SESSION['last_order'] = [
     'items' => $items,
     'total' => cart_total(),
     'name' => $_POST['name'] ?? '',
     'email' => $_POST['email'] ?? '',
   ];
-  // Prepare payment redirect with HMAC hash
+  
   $amount = cart_total();
   $user_name = $_POST['name'] ?? '';
   $user_email = $_POST['email'] ?? '';
-  // Load secret key from config.php (add 'bmipay_secret' => 'YOUR_SECRET_KEY', to your config)
+  
   $config = require __DIR__ . '/config.php';
   $secret = $config['bmipay_secret'] ?? 'changeme';
   $data = $user_name . '|' . $user_email . '|' . $amount;
   $hash = hash_hmac('sha256', $data, $secret);
+  
   $bmipay_url = "http://localhost/BMIPAY/index.php?user_name=" . urlencode($user_name) . "&user_email=" . urlencode($user_email) . "&amount={$amount}&hash={$hash}";
+  
   unset($_SESSION['cart']);
   header('Location: ' . $bmipay_url);
   exit;
 }
+
+$fallbackCover = 'assets/images/books%20main.png';
+
+require_once __DIR__ . '/includes/header.php';
 ?>
-<?php require_once __DIR__ . '/includes/header.php'; ?>
 
+<main class="checkout-page">
+  <section class="checkout-header">
+    <div class="container">
+      <h1>Checkout</h1>
+    </div>
+  </section>
 
-<div class="checkout-bg py-5">
-  <div class="checkout-container container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-lg-8">
-        <div class="checkout-card shadow-lg">
-          <h1 class="checkout-title mb-4">Checkout</h1>
-          <form method="post" class="checkout-form row g-4">
-            <div class="col-md-6">
-              <label class="form-label">Full name</label>
-              <input name="name" required class="form-control checkout-input">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Email</label>
-              <input name="email" type="email" required class="form-control checkout-input">
-            </div>
-            <div class="col-12">
-              <div class="checkout-summary p-3 mb-3 rounded">
-                <h5 class="mb-3">Order Summary</h5>
-                <ul class="checkout-items list-unstyled mb-2">
-                  <?php foreach ($items as $it): $b = $it['book']; ?>
-                  <li class="d-flex justify-content-between align-items-center mb-2">
-                    <span><?= htmlspecialchars($b['title']) ?> <span class="text-muted small">x<?= $it['qty'] ?></span></span>
-                    <span><?= format_price($b['price'] * $it['qty']) ?></span>
-                  </li>
-                  <?php endforeach; ?>
-                </ul>
-                <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
-                  <strong>Total</strong>
-                  <strong><?= format_price(cart_total()) ?></strong>
+  <section class="checkout-content">
+    <div class="container">
+      <div class="checkout-grid">
+        <div class="checkout-form-section">
+          <div class="checkout-card">
+            <h2>Billing Information</h2>
+            <form method="post" class="checkout-form">
+              <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" required placeholder="Enter your full name">
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
+              </div>
+              
+              <div class="checkout-actions">
+                <button type="submit" class="btn checkout-submit-btn">Place Order</button>
+                <a href="cart.php" class="btn checkout-back-btn">Back to Cart</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="checkout-summary-section">
+          <div class="checkout-summary">
+            <h2>Order Summary</h2>
+            <div class="checkout-items">
+              <?php foreach ($items as $it): 
+                $b = $it['book'];
+                $cover = !empty($b['cover']) ? $b['cover'] : $fallbackCover;
+                $coverUrl = resolve_cover_url($cover);
+              ?>
+                <div class="checkout-item">
+                  <div class="checkout-item-image">
+                    <img src="<?= htmlspecialchars($coverUrl) ?>" alt="<?= htmlspecialchars($b['title']) ?>">
+                  </div>
+                  <div class="checkout-item-details">
+                    <p class="checkout-item-title"><?= htmlspecialchars($b['title']) ?></p>
+                    <p class="checkout-item-qty">Qty: <?= $it['qty'] ?></p>
+                  </div>
+                  <div class="checkout-item-price">
+                    <?= format_price($b['price'] * $it['qty']) ?>
+                  </div>
                 </div>
+              <?php endforeach; ?>
+            </div>
+            <div class="checkout-summary-total">
+              <div class="checkout-summary-row">
+                <span>Subtotal (<?= count($items) ?> <?= count($items) === 1 ? 'item' : 'items' ?>):</span>
+                <span><?= format_price(cart_total()) ?></span>
+              </div>
+              <div class="checkout-summary-grand">
+                <span>Order Total:</span>
+                <span><?= format_price(cart_total()) ?></span>
               </div>
             </div>
-            <div class="col-12 d-flex flex-column flex-md-row gap-3">
-              <button class="btn btn-gradient checkout-btn flex-fill" type="submit">Place Order</button>
-              <a class="btn btn-secondary flex-fill" href="cart.php">Back to cart</a>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
+</main>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
