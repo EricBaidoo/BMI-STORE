@@ -3,11 +3,11 @@ require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/_auth.php';
 require_once __DIR__ . '/../includes/header.php';
 
-$subsFile = __DIR__ . '/../data/subscribers.json';
 $subs = [];
-if (file_exists($subsFile)) {
-    $data = json_decode(file_get_contents($subsFile), true);
-    if (is_array($data)) $subs = $data;
+$pdo = get_pdo();
+if ($pdo) {
+  $stmt = $pdo->query('SELECT email, subscribed_at FROM subscribers ORDER BY subscribed_at DESC');
+  $subs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 ?>

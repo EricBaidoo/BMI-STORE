@@ -124,18 +124,12 @@ function detect_currency_code() {
         return $default;
     }
 
-    $geoCacheFile = __DIR__ . '/../data/currency_geo_cache.json';
-    $geoCache = [];
-    if (file_exists($geoCacheFile)) {
-        $raw = file_get_contents($geoCacheFile);
-        $geoCache = json_decode($raw, true) ?: [];
-        if (!empty($geoCache[$ip]) && !empty($geoCache[$ip]['code']) && !empty($geoCache[$ip]['timestamp'])) {
-            if ((time() - (int)$geoCache[$ip]['timestamp']) < $geoTtl) {
-                $code = strtoupper($geoCache[$ip]['code']);
-                $_SESSION['currency_code'] = $code;
-                set_currency_cookie($code);
-                return $code;
-            }
+    if (!empty($_SESSION['currency_geo'][$ip]['code']) && !empty($_SESSION['currency_geo'][$ip]['timestamp'])) {
+        if ((time() - (int)$_SESSION['currency_geo'][$ip]['timestamp']) < $geoTtl) {
+            $code = strtoupper($_SESSION['currency_geo'][$ip]['code']);
+            $_SESSION['currency_code'] = $code;
+            set_currency_cookie($code);
+            return $code;
         }
     }
 
@@ -153,11 +147,10 @@ function detect_currency_code() {
         if (!empty($data['currency'])) {
             $code = strtoupper($data['currency']);
             $_SESSION['currency_code'] = $code;
-            $geoCache[$ip] = [
+            $_SESSION['currency_geo'][$ip] = [
                 'code' => $code,
                 'timestamp' => time()
             ];
-            file_put_contents($geoCacheFile, json_encode($geoCache));
             set_currency_cookie($code);
             return $code;
         }
@@ -183,15 +176,9 @@ function get_exchange_rates($base) {
     $cfg = require __DIR__ . '/../config.php';
     $ttl = (int)($cfg['currency']['cache_ttl'] ?? 21600);
     $rateTimeout = (float)($cfg['currency']['rate_timeout'] ?? 1.0);
-    $cacheFile = __DIR__ . '/../data/currency_cache.json';
-
-    if (file_exists($cacheFile)) {
-        $raw = file_get_contents($cacheFile);
-        $cached = json_decode($raw, true);
-        if (!empty($cached['timestamp']) && !empty($cached['base']) && !empty($cached['rates'])) {
-            if ($cached['base'] === $base && (time() - (int)$cached['timestamp']) < $ttl) {
-                return $cached['rates'];
-            }
+    if (!empty($_SESSION['currency_rates']['timestamp']) && !empty($_SESSION['currency_rates']['base']) && !empty($_SESSION['currency_rates']['rates'])) {
+        if ($_SESSION['currency_rates']['base'] === $base && (time() - (int)$_SESSION['currency_rates']['timestamp']) < $ttl) {
+            return $_SESSION['currency_rates']['rates'];
         }
     }
 
@@ -207,12 +194,11 @@ function get_exchange_rates($base) {
     if ($resp) {
         $data = json_decode($resp, true);
         if (!empty($data['rates']) && is_array($data['rates'])) {
-            $payload = [
+            $_SESSION['currency_rates'] = [
                 'base' => $base,
                 'timestamp' => time(),
                 'rates' => $data['rates']
             ];
-            file_put_contents($cacheFile, json_encode($payload));
             return $data['rates'];
         }
     }

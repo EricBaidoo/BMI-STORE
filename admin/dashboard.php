@@ -11,14 +11,14 @@ $orders = [];
 if (isset($_SESSION['last_order'])) $orders[] = $_SESSION['last_order'];
 $orderCount = count($orders);
 
-$subsFile = __DIR__ . '/../data/subscribers.json';
 $subs = [];
-if (file_exists($subsFile)) {
-  $data = json_decode(file_get_contents($subsFile), true);
-  if (is_array($data)) $subs = $data;
+$pdo = get_pdo();
+if ($pdo) {
+  $stmt = $pdo->query('SELECT email, subscribed_at FROM subscribers ORDER BY subscribed_at DESC');
+  $subs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 $subCount = count($subs);
-$recentSub = $subCount ? $subs[$subCount - 1] : null;
+$recentSub = $subCount ? $subs[0] : null;
 $recentOrder = $orderCount ? $orders[0] : null;
 
 require_once __DIR__ . '/../includes/header.php';

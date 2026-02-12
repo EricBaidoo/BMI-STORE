@@ -3,18 +3,11 @@ require_once __DIR__ . '/../includes/functions.php';
 $cfg = require __DIR__ . '/../config.php';
 
 $error = null;
-// Support upgraded hashed credentials stored in data/admin_credentials.php
-$credsFile = __DIR__ . '/../data/admin_credentials.php';
-$stored = $cfg['admin'] ?? [];
-if (file_exists($credsFile)) {
-  $c = require $credsFile; if (is_array($c)) $stored = $c;
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $u = $_POST['username'] ?? '';
   $p = $_POST['password'] ?? '';
-  $expectedUser = $stored['user'] ?? ($cfg['admin']['user'] ?? 'admin');
-  $hash = $stored['pass_hash'] ?? null;
+  $expectedUser = $cfg['admin']['user'] ?? 'admin';
   $legacyPass = $cfg['admin']['pass'] ?? null;
 
   $ok = false;
@@ -48,20 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   }
 
-  if (!$dbChecked && $u === $expectedUser) {
-    if ($hash && password_verify($p, $hash)) {
-      $ok = true;
-    } elseif ($legacyPass && $p === $legacyPass) {
-      // legacy plaintext match - upgrade to hashed credentials file
-      $newHash = password_hash($p, PASSWORD_DEFAULT);
-      $cred = [ 'user' => $expectedUser, 'pass_hash' => $newHash ];
-      file_put_contents(__DIR__ . '/../data/admin_credentials.php', "<?php\nreturn " . var_export($cred, true) . ";\n");
-      $ok = true;
-    }
+  if (!$dbChecked && $u === $expectedUser && $legacyPass && $p === $legacyPass) {
+    $ok = true;
   }
 
   if ($ok) {
     $_SESSION['is_admin'] = true;
+    $_SESSION['admin_user'] = $u;
     header('Location: dashboard.php'); exit;
   }
   $error = 'Invalid credentials';

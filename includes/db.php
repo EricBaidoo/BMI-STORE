@@ -25,11 +25,3 @@ function get_pdo() {
     }
 }
 
-function load_books_from_json() {
-    $config = require __DIR__ . '/../config.php';
-    $file = $config['data_file'];
-    if (!file_exists($file)) return [];
-    $json = file_get_contents($file);
-    $data = json_decode($json, true);
-    return $data ?: [];
-}

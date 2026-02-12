@@ -8,12 +8,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$new || $new !== $confirm) {
         $error = 'Passwords do not match or are empty.';
     } else {
-  $hash = password_hash($new, PASSWORD_DEFAULT);
-  $current = isset($CURRENT_ADMIN) ? $CURRENT_ADMIN : (isset($cfg['admin']['user']) ? $cfg['admin']['user'] : 'admin');
-  $cred = [ 'user' => $current, 'pass_hash' => $hash ];
-        $out = "<?php\nreturn " . var_export($cred, true) . ";\n";
-        file_put_contents(__DIR__ . '/../data/admin_credentials.php', $out, LOCK_EX);
-        $success = true;
+    $hash = password_hash($new, PASSWORD_DEFAULT);
+    $current = isset($CURRENT_ADMIN) ? $CURRENT_ADMIN : (isset($cfg['admin']['user']) ? $cfg['admin']['user'] : 'admin');
+    $pdo = get_pdo();
+    if ($pdo) {
+      $stmt = $pdo->prepare('UPDATE admins SET password_hash = ? WHERE username = ?');
+      $stmt->execute([$hash, $current]);
+      $success = true;
+    } else {
+      $error = 'Database connection is unavailable.';
+    }
     }
 }
 
