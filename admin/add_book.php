@@ -88,6 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
       } catch (Exception $e) {
         $error = 'Could not save the book to the database. Check your DB config and table schema.';
+        $host = $_SERVER['HTTP_HOST'] ?? '';
+        if ($host === 'localhost' || $host === '127.0.0.1') {
+          $error .= ' Error: ' . $e->getMessage();
+        }
       }
     } else {
       $error = 'Database connection is unavailable. Please check your DB settings.';
