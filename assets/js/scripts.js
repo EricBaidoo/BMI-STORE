@@ -12,4 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			wrap: true
 		});
 	}
+
+	var filtersForm = document.querySelector('.js-books-filters');
+	if (filtersForm) {
+		filtersForm.addEventListener('change', function (event) {
+			var target = event.target;
+			if (target && target.tagName === 'SELECT') {
+				filtersForm.submit();
+			}
+		});
+	}
 });

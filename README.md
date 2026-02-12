@@ -10,5 +10,5 @@ How to run
 
 Notes
 
-- Data is stored in `data/books.json` by default. To use MySQL, edit `config.php` and set `db.name`/`db.user`/`db.pass`. Then implement a `books` table.
-- Admin pages are not protected in this scaffold. Add authentication before using in production.
+- Data is stored in `data/books.json` by default. To use MySQL, edit `config.php` and set `db.name`/`db.user`/`db.pass`, then run the schema in `data/schema.sql`.
+- Admin login now supports MySQL. If the `admins` table is empty, you can log in once with the credentials in `config.php` to seed the admin account automatically.

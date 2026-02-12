@@ -15,12 +15,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $p = $_POST['password'] ?? '';
   $expectedUser = $stored['user'] ?? ($cfg['admin']['user'] ?? 'admin');
   $hash = $stored['pass_hash'] ?? null;
+  $legacyPass = $cfg['admin']['pass'] ?? null;
 
   $ok = false;
-  if ($u === $expectedUser) {
+  $dbChecked = false;
+  $pdo = get_pdo();
+  if ($pdo) {
+    $dbChecked = true;
+    try {
+      $stmt = $pdo->prepare('SELECT id, password_hash FROM admins WHERE username = ? LIMIT 1');
+      $stmt->execute([$u]);
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if ($row && password_verify($p, $row['password_hash'])) {
+        $ok = true;
+      } elseif (!$row && $u === $expectedUser) {
+        $seedHash = null;
+        if ($hash && password_verify($p, $hash)) {
+          $seedHash = $hash;
+        } elseif ($legacyPass && $p === $legacyPass) {
+          $seedHash = password_hash($p, PASSWORD_DEFAULT);
+        }
+
+        if ($seedHash) {
+          $ins = $pdo->prepare('INSERT INTO admins (username, password_hash) VALUES (?, ?)');
+          $ins->execute([$expectedUser, $seedHash]);
+          $ok = true;
+        }
+      }
+    } catch (Exception $e) {
+      $dbChecked = false;
+    }
+  }
+
+  if (!$dbChecked && $u === $expectedUser) {
     if ($hash && password_verify($p, $hash)) {
       $ok = true;
-    } elseif (isset($cfg['admin']['pass']) && $p === $cfg['admin']['pass']) {
+    } elseif ($legacyPass && $p === $legacyPass) {
       // legacy plaintext match - upgrade to hashed credentials file
       $newHash = password_hash($p, PASSWORD_DEFAULT);
       $cred = [ 'user' => $expectedUser, 'pass_hash' => $newHash ];
@@ -36,16 +67,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $error = 'Invalid credentials';
 }
 
+$page_css = 'login.css';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-  <h1>Admin Login</h1>
-  <?php if ($error): ?>
-    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-  <?php endif; ?>
-  <form method="post" class="w-100" style="max-width:420px">
-    <div class="mb-3"><label class="form-label">Username</label><input name="username" class="form-control" required></div>
-    <div class="mb-3"><label class="form-label">Password</label><input name="password" type="password" class="form-control" required></div>
-    <div><button class="btn btn-primary">Sign in</button> <a class="btn btn-secondary" href="../index.php">Back</a></div>
-  </form>
+  <section class="admin-login">
+    <div class="admin-login-card">
+      <div class="admin-login-visual" aria-hidden="true">
+        <div class="admin-login-overlay">
+          <div class="admin-login-brand">
+            <span class="admin-login-brand-title">BMI Book Store</span>
+            <span class="admin-login-brand-sub">Admin Login</span>
+          </div>
+        </div>
+      </div>
+      <div class="admin-login-panel">
+        
+        <?php if ($error): ?>
+          <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        <form method="post" class="admin-login-form">
+          <div class="mb-3">
+            <label class="form-label" for="admin-username">Username</label>
+            <input id="admin-username" name="username" class="form-control" required autocomplete="username">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="admin-password">Password</label>
+            <input id="admin-password" name="password" type="password" class="form-control" required autocomplete="current-password">
+          </div>
+          <button class="btn btn-primary w-100" type="submit">Sign in</button>
+          <div class="admin-login-footer">
+            <a class="btn btn-link" href="../index.php">Back to store</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

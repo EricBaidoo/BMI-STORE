@@ -52,30 +52,103 @@
   letter-spacing: 0.03125rem;
 }
 .books-search-form {
-  max-width: 25rem;
+  max-width: 100%;
   width: 100%;
 }
-.books-search-input {
-  border-radius: 2rem;
-  font-size: 1.1rem;
-  padding: 0.7rem 1.2rem;
-  border: 0.0625rem solid #e6eefc;
-  box-shadow: 0 0.125rem 0.5rem rgba(13,110,253,0.04);
+.books-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
-.books-search-btn {
-  border-radius: 2rem;
+.books-subtitle {
+  margin: 0.35rem 0 0;
+  color: #475569;
+  font-size: 1rem;
+}
+.books-results-count {
+  font-weight: 600;
+  color: #475569;
+}
+.books-filter-panel {
+  background: #f8fafc;
+  border: 0.0625rem solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.06);
+}
+.books-filter-form {
+  width: 100%;
+}
+.books-filter-row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 2fr) minmax(10rem, 1.1fr) minmax(9rem, 0.9fr) minmax(8rem, 0.8fr) minmax(8rem, 0.9fr);
+  gap: 1rem;
+  align-items: end;
+}
+.books-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.books-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+.books-input,
+.books-select {
+  border-radius: 0.9rem;
+  font-size: 0.98rem;
+  padding: 0.65rem 0.9rem;
+  border: 0.0625rem solid #dbe4f3;
+  background: #fff;
+  box-shadow: 0 0.125rem 0.4rem rgba(15, 23, 42, 0.05);
+}
+.books-price-group {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.35rem;
+}
+.books-price-input {
+  border-radius: 0.9rem;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  border: 0.0625rem solid #dbe4f3;
+  background: #fff;
+  box-shadow: 0 0.125rem 0.4rem rgba(15, 23, 42, 0.05);
+}
+.books-price-sep {
+  color: #94a3b8;
+  font-weight: 600;
+}
+.books-action-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.books-action-btn {
+  border-radius: 999px;
   font-weight: 700;
-  padding: 0.7rem 2.2rem;
-  font-size: 1.1rem;
+  padding: 0.65rem 1.6rem;
+  font-size: 0.95rem;
   background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
   border: none;
   color: #fff;
-  box-shadow: 0 0.125rem 0.5rem rgba(13,110,253,0.08);
-  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 0.125rem 0.5rem rgba(13,110,253,0.12);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
 }
-.books-search-btn:hover {
+.books-action-btn:hover {
   background: linear-gradient(90deg, #2563eb 0%, #0d6efd 100%);
   color: #fff;
+  transform: translateY(-1px);
+}
+.books-clear-btn {
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
 }
 .product-grid {
   margin-top: 1.5rem;
@@ -172,7 +245,62 @@
   color: #fff;
   border: none;
 }
+.books-filters {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.books-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #f1f5ff;
+  color: #0d6efd;
+  border: 0.0625rem solid #cfe0ff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.books-filter-chip:hover {
+  background: #e8f0ff;
+  color: #0b5ed7;
+}
+.books-filter-chip-clear {
+  background: #fff7ed;
+  color: #b45309;
+  border-color: #fdba74;
+}
+.books-filter-chip-clear:hover {
+  background: #ffedd5;
+  color: #b45309;
+}
+.books-empty {
+  background: #f8fafc;
+  border: 0.0625rem dashed #d1d5db;
+  border-radius: 0.9rem;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+.books-empty h4 {
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+.books-empty-actions {
+  margin-top: 0.75rem;
+}
 @media (max-width: 767px) {
+  .books-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .books-filter-panel {
+    padding: 1rem;
+  }
+  .books-filter-row {
+    grid-template-columns: 1fr;
+  }
   .books-landing {
     padding: 1.2rem 0.5rem;
   }
@@ -210,5 +338,17 @@
   }
   .books-title {
     font-size: 1.3rem;
+  }
+  .books-input,
+  .books-select,
+  .books-price-group,
+  .books-action-group .btn {
+    width: 100%;
+  }
+  .books-price-group {
+    grid-template-columns: 1fr auto 1fr;
+  }
+  .books-price-input {
+    width: 100%;
   }
 }

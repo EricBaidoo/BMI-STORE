@@ -13,7 +13,7 @@ function all_books() {
         $stmt = $pdo->query('SELECT * FROM books');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    return load_books_from_json();
+    return [];
 }
 
 /**
@@ -39,7 +39,10 @@ function find_book($id_or_slug) {
 }
 
 function format_price($p) {
-    return '$' . number_format($p, 2);
+    $currency = detect_currency_code();
+    $rate = get_currency_rate($currency);
+    $value = (float)$p * $rate;
+    return $currency . ' ' . number_format($value, 2);
 }
 
 function cart_add($book_id, $qty = 1) {
@@ -71,4 +74,146 @@ function cart_total() {
         $total += ($it['book']['price'] ?? 0) * $it['qty'];
     }
     return $total;
+}
+
+function detect_currency_code() {
+    if (!empty($_COOKIE['currency_code'])) {
+        $code = strtoupper(trim($_COOKIE['currency_code']));
+        if ($code !== '') {
+            $_SESSION['currency_code'] = $code;
+            return $code;
+        }
+    }
+    if (!empty($_SESSION['currency_code'])) return $_SESSION['currency_code'];
+    $cfg = require __DIR__ . '/../config.php';
+    $default = $cfg['currency']['default'] ?? 'GHS';
+    $geoTtl = (int)($cfg['currency']['geo_ttl'] ?? 604800);
+    $geoTimeout = (float)($cfg['currency']['geo_timeout'] ?? 0.8);
+
+    $ip = get_client_ip();
+    if (!$ip || is_private_ip($ip)) {
+        $_SESSION['currency_code'] = $default;
+        set_currency_cookie($default);
+        return $default;
+    }
+
+    $geoCacheFile = __DIR__ . '/../data/currency_geo_cache.json';
+    $geoCache = [];
+    if (file_exists($geoCacheFile)) {
+        $raw = file_get_contents($geoCacheFile);
+        $geoCache = json_decode($raw, true) ?: [];
+        if (!empty($geoCache[$ip]) && !empty($geoCache[$ip]['code']) && !empty($geoCache[$ip]['timestamp'])) {
+            if ((time() - (int)$geoCache[$ip]['timestamp']) < $geoTtl) {
+                $code = strtoupper($geoCache[$ip]['code']);
+                $_SESSION['currency_code'] = $code;
+                set_currency_cookie($code);
+                return $code;
+            }
+        }
+    }
+
+    $url = 'https://ipapi.co/' . rawurlencode($ip) . '/json/';
+    $opts = [
+        'http' => [
+            'timeout' => $geoTimeout,
+            'header' => "User-Agent: BMI-STORE/1.0\r\n"
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $resp = @file_get_contents($url, false, $context);
+    if ($resp) {
+        $data = json_decode($resp, true);
+        if (!empty($data['currency'])) {
+            $code = strtoupper($data['currency']);
+            $_SESSION['currency_code'] = $code;
+            $geoCache[$ip] = [
+                'code' => $code,
+                'timestamp' => time()
+            ];
+            file_put_contents($geoCacheFile, json_encode($geoCache));
+            set_currency_cookie($code);
+            return $code;
+        }
+    }
+
+    $_SESSION['currency_code'] = $default;
+    set_currency_cookie($default);
+    return $default;
+}
+
+function get_currency_rate($currencyCode) {
+    $cfg = require __DIR__ . '/../config.php';
+    $base = $cfg['currency']['base'] ?? 'USD';
+    if (!$currencyCode || strtoupper($currencyCode) === strtoupper($base)) return 1.0;
+
+    $rates = get_exchange_rates($base);
+    $key = strtoupper($currencyCode);
+    if (!empty($rates[$key])) return (float)$rates[$key];
+    return 1.0;
+}
+
+function get_exchange_rates($base) {
+    $cfg = require __DIR__ . '/../config.php';
+    $ttl = (int)($cfg['currency']['cache_ttl'] ?? 21600);
+    $rateTimeout = (float)($cfg['currency']['rate_timeout'] ?? 1.0);
+    $cacheFile = __DIR__ . '/../data/currency_cache.json';
+
+    if (file_exists($cacheFile)) {
+        $raw = file_get_contents($cacheFile);
+        $cached = json_decode($raw, true);
+        if (!empty($cached['timestamp']) && !empty($cached['base']) && !empty($cached['rates'])) {
+            if ($cached['base'] === $base && (time() - (int)$cached['timestamp']) < $ttl) {
+                return $cached['rates'];
+            }
+        }
+    }
+
+    $url = 'https://api.exchangerate.host/latest?base=' . rawurlencode($base);
+    $opts = [
+        'http' => [
+            'timeout' => $rateTimeout,
+            'header' => "User-Agent: BMI-STORE/1.0\r\n"
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $resp = @file_get_contents($url, false, $context);
+    if ($resp) {
+        $data = json_decode($resp, true);
+        if (!empty($data['rates']) && is_array($data['rates'])) {
+            $payload = [
+                'base' => $base,
+                'timestamp' => time(),
+                'rates' => $data['rates']
+            ];
+            file_put_contents($cacheFile, json_encode($payload));
+            return $data['rates'];
+        }
+    }
+
+    return [];
+}
+
+function set_currency_cookie($code) {
+    if (headers_sent()) return;
+    setcookie('currency_code', strtoupper($code), [
+        'expires' => time() + 60 * 60 * 24 * 30,
+        'path' => '/',
+        'samesite' => 'Lax'
+    ]);
+}
+
+function get_client_ip() {
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $parts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($parts[0]);
+    }
+    return $_SERVER['REMOTE_ADDR'] ?? '';
+}
+
+function is_private_ip($ip) {
+    if (!filter_var($ip, FILTER_VALIDATE_IP)) return true;
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        return preg_match('/^(10\.|127\.|172\.(1[6-9]|2\d|3[0-1])\.|192\.168\.)/', $ip) === 1;
+    }
+    return $ip === '::1';
 }
