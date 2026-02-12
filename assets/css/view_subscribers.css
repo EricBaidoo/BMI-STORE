@@ -1,0 +1,248 @@
+/* Per-page styles for admin/view_subscribers.php */
+.admin-subscribers-page {
+	max-width: 1150px;
+	margin: 2.5rem auto 3rem;
+	padding: 0 1.25rem;
+}
+
+.admin-subscribers-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 2rem;
+	background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 64, 175, 0.92));
+	color: #ffffff;
+	border-radius: 1.4rem;
+	padding: 2rem 2.5rem;
+	box-shadow: 0 1.25rem 2.5rem rgba(15, 23, 42, 0.2);
+	margin-bottom: 1.75rem;
+}
+
+.admin-kicker {
+	text-transform: uppercase;
+	letter-spacing: 0.3em;
+	font-size: 0.75rem;
+	color: rgba(226, 232, 240, 0.7);
+	margin-bottom: 0.4rem;
+}
+
+.admin-subscribers-header h1 {
+	font-size: 2.3rem;
+	margin-bottom: 0.5rem;
+	color: #ffffff;
+	font-weight: 800;
+}
+
+.admin-subtitle {
+	margin: 0;
+	color: rgba(226, 232, 240, 0.85);
+}
+
+.admin-subscribers-actions {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+.admin-subscriber-count {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: rgba(255, 255, 255, 0.15);
+	padding: 0.6rem 1.2rem;
+	border-radius: 999px;
+	color: #ffffff;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.admin-subscribers-actions .btn {
+	border-radius: 999px;
+	padding: 0.55rem 1.4rem;
+	font-weight: 600;
+}
+
+.admin-subscribers-table-wrap {
+	background: #f8fafc;
+	border-radius: 0.9rem;
+	border: 1px solid #e2e8f0;
+	overflow: hidden;
+	box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.08);
+}
+
+.admin-subscribers-table {
+	margin-bottom: 0;
+}
+
+.admin-subscribers-table thead {
+	background: #f1f5f9;
+}
+
+.admin-subscribers-table thead th {
+	border-bottom: 1px solid #e2e8f0;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: #64748b;
+	padding: 1rem 1.25rem;
+	font-weight: 700;
+}
+
+.admin-subscribers-table tbody tr {
+	border-bottom: 1px solid #f1f5f9;
+	transition: all 0.2s;
+}
+
+.admin-subscribers-table tbody tr:hover {
+	background: #ffffff;
+	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.admin-subscribers-table tbody tr:last-child {
+	border-bottom: none;
+}
+
+.admin-subscribers-table tbody td {
+	padding: 1.2rem 1.25rem;
+	vertical-align: middle;
+}
+
+.admin-table-number {
+	text-align: center;
+	width: 60px;
+}
+
+.admin-subscriber-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
+	color: #ffffff;
+	border-radius: 50%;
+	font-size: 0.85rem;
+	font-weight: 700;
+}
+
+.admin-subscriber-email {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	color: #0f172a;
+	font-weight: 600;
+}
+
+.admin-subscriber-email i {
+	color: #0284c7;
+	font-size: 1.2rem;
+}
+
+.admin-table-date {
+	color: #64748b;
+	font-size: 0.9rem;
+	white-space: nowrap;
+}
+
+.admin-table-action {
+	text-align: center;
+	width: 50px;
+}
+
+.admin-action-link-text {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	background: #f1f5f9;
+	color: #0284c7;
+	border-radius: 0.6rem;
+	transition: all 0.2s;
+	text-decoration: none;
+	font-size: 1.1rem;
+}
+
+.admin-action-link-text:hover {
+	background: #0284c7;
+	color: #ffffff;
+	transform: translateY(-2px);
+}
+
+.admin-empty {
+	padding: 3rem;
+	text-align: center;
+	background: #f8fafc;
+	border-radius: 0.9rem;
+	border: 2px dashed #e2e8f0;
+}
+
+.admin-empty-icon {
+	font-size: 3rem;
+	color: #cbd5e1;
+	margin-bottom: 1rem;
+	display: block;
+}
+
+.admin-empty p {
+	margin: 0 0 0.5rem;
+	color: #0f172a;
+	font-size: 1.1rem;
+	font-weight: 600;
+}
+
+.admin-empty small {
+	color: #94a3b8;
+	display: block;
+}
+
+@media (max-width: 991.98px) {
+	.admin-subscribers-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.admin-subscribers-actions {
+		width: 100%;
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.admin-subscribers-header {
+		padding: 1.6rem;
+	}
+
+	.admin-subscribers-header h1 {
+		font-size: 1.8rem;
+	}
+
+	.admin-subscribers-actions {
+		width: 100%;
+		flex-direction: column;
+	}
+
+	.admin-subscribers-actions .btn {
+		width: 100%;
+	}
+
+	.admin-subscribers-table thead {
+		font-size: 0.75rem;
+	}
+
+	.admin-subscribers-table tbody td {
+		padding: 0.9rem 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.admin-subscriber-email {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.admin-table-number,
+	.admin-table-date,
+	.admin-table-action {
+		font-size: 0.85rem;
+	}
+}

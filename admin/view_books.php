@@ -33,6 +33,7 @@ require_once __DIR__ . '/../includes/header.php';
               <th>Price</th>
               <th>Stock</th>
               <th>Featured</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +57,9 @@ require_once __DIR__ . '/../includes/header.php';
                 <td><?= format_price($b['price'] ?? 0) ?></td>
                 <td><?= (int)($b['stock'] ?? 0) ?></td>
                 <td><?= !empty($b['featured']) ? 'Yes' : 'No' ?></td>
+                <td>
+                  <a href="edit_book.php?id=<?= (int)($b['id'] ?? 0) ?>" class="admin-action-link">Edit</a>
+                </td>
               </tr>
             <?php endforeach; ?>
           </tbody>

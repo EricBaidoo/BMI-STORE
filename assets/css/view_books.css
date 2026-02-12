@@ -126,6 +126,25 @@
   border: 1px dashed #e2e8f0;
 }
 
+.admin-action-link {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  background: #2563eb;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.admin-action-link:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 0.5rem 1rem rgba(37, 99, 235, 0.25);
+  color: #ffffff;
+}
+
 @media (max-width: 991.98px) {
   .admin-books-header {
     flex-direction: column;
