@@ -120,39 +120,38 @@ if ($perPage !== 8) {
 }
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="books-landing container py-4">
-  <div class="books-header mb-4">
-    <div class="books-header-top">
-      <div>
-        <h2 class="books-page-title">Welcome to Our Church Bookstore</h2>
-        <p class="books-subtitle">Discover faith-building reads, timeless classics, and new arrivals.</p>
+<section class="catalog-page">
+  <div class="catalog-hero">
+    <div class="container catalog-hero-inner">
+      <div class="catalog-hero-copy">
+        <p class="catalog-kicker">Catalog</p>
+        <h1>Find your next faith-building read</h1>
+        <p class="catalog-subtitle">Curated collections, trusted authors, and meaningful titles for every season.</p>
       </div>
-      <div class="books-results-count">
+      <div class="catalog-results">
         <?php if ($total > 0): ?>
           Showing <?= $showingStart ?>–<?= $showingEnd ?> of <?= $total ?> results
         <?php else: ?>
           0 results
         <?php endif; ?>
       </div>
-    </div>
-    <div class="books-filter-panel">
-      <form class="books-filter-form js-books-filters" method="get" action="books.php">
-        <div class="books-filter-row">
-          <div class="books-field books-field-search">
-            <label for="books-search" class="books-label">Search</label>
-            <input id="books-search" class="form-control books-input" type="search" name="q" placeholder="Search by title, author..." value="<?= htmlspecialchars($search) ?>">
+      <form class="catalog-filters js-books-filters" method="get" action="books.php">
+        <div class="catalog-filter-grid">
+          <div class="catalog-field catalog-search">
+            <label for="books-search" class="catalog-label">Search</label>
+            <input id="books-search" class="form-control catalog-input" type="search" name="q" placeholder="Search by title, author..." value="<?= htmlspecialchars($search) ?>">
           </div>
-          <div class="books-field books-field-price">
-            <label class="books-label" for="books-min-price">Price range</label>
-            <div class="books-price-group">
-              <input id="books-min-price" class="form-control books-price-input" type="number" name="min_price" step="0.01" min="0" placeholder="Min" value="<?= htmlspecialchars((string)$minPrice) ?>">
-              <span class="books-price-sep" aria-hidden="true">–</span>
-              <input id="books-max-price" class="form-control books-price-input" type="number" name="max_price" step="0.01" min="0" placeholder="Max" value="<?= htmlspecialchars((string)$maxPrice) ?>">
+          <div class="catalog-field">
+            <label for="books-min-price" class="catalog-label">Price range</label>
+            <div class="catalog-price">
+              <input id="books-min-price" class="form-control catalog-input" type="number" name="min_price" step="0.01" min="0" placeholder="Min" value="<?= htmlspecialchars((string)$minPrice) ?>">
+              <span aria-hidden="true">–</span>
+              <input id="books-max-price" class="form-control catalog-input" type="number" name="max_price" step="0.01" min="0" placeholder="Max" value="<?= htmlspecialchars((string)$maxPrice) ?>">
             </div>
           </div>
-          <div class="books-field books-field-sort">
-            <label for="books-sort" class="books-label">Sort</label>
-            <select id="books-sort" class="form-select books-select" name="sort" aria-label="Sort books">
+          <div class="catalog-field">
+            <label for="books-sort" class="catalog-label">Sort</label>
+            <select id="books-sort" class="form-select catalog-select" name="sort" aria-label="Sort books">
               <option value=""<?= $sort === '' ? ' selected' : '' ?>>Default</option>
               <option value="title_asc"<?= $sort === 'title_asc' ? ' selected' : '' ?>>Title A–Z</option>
               <option value="price_asc"<?= $sort === 'price_asc' ? ' selected' : '' ?>>Price: Low to High</option>
@@ -160,82 +159,106 @@ require_once __DIR__ . '/includes/header.php';
               <option value="newest"<?= $sort === 'newest' ? ' selected' : '' ?>>Newest</option>
             </select>
           </div>
-          <div class="books-field books-field-perpage">
-            <label for="books-per-page" class="books-label">Per page</label>
-            <select id="books-per-page" class="form-select books-select" name="per_page" aria-label="Results per page">
+          <div class="catalog-field">
+            <label for="books-per-page" class="catalog-label">Per page</label>
+            <select id="books-per-page" class="form-select catalog-select" name="per_page" aria-label="Results per page">
               <?php foreach ([6, 8, 12, 24, 48] as $size): ?>
                 <option value="<?= $size ?>"<?= $perPage === $size ? ' selected' : '' ?>><?= $size ?> / page</option>
               <?php endforeach; ?>
             </select>
           </div>
-          <div class="books-field books-field-actions">
-            <label class="books-label" aria-hidden="true">&nbsp;</label>
-            <div class="books-action-group">
-              <button class="btn btn-primary books-action-btn" type="submit">Apply</button>
+          <div class="catalog-field catalog-actions">
+            <label class="catalog-label" aria-hidden="true">&nbsp;</label>
+            <div class="catalog-action-group">
+              <button class="btn catalog-apply" type="submit">Apply</button>
               <?php if ($search !== '' || $priceActive || $sort !== ''): ?>
-                <a class="btn btn-outline-secondary books-clear-btn" href="books.php">Clear</a>
+                <a class="btn btn-outline-secondary catalog-clear" href="books.php">Clear</a>
               <?php endif; ?>
             </div>
           </div>
         </div>
       </form>
     </div>
+  </div>
+
+  <div class="container catalog-body">
     <?php if (!empty($filterChips)): ?>
-      <div class="books-filters">
+      <div class="catalog-chips">
         <?php foreach ($filterChips as $chip): ?>
-          <a class="books-filter-chip<?= !empty($chip['class']) ? ' ' . htmlspecialchars($chip['class']) : '' ?>" href="<?= htmlspecialchars($chip['url']) ?>" aria-label="Remove filter: <?= htmlspecialchars($chip['label']) ?>">
+          <a class="catalog-chip<?= !empty($chip['class']) ? ' ' . htmlspecialchars($chip['class']) : '' ?>" href="<?= htmlspecialchars($chip['url']) ?>" aria-label="Remove filter: <?= htmlspecialchars($chip['label']) ?>">
             <?= htmlspecialchars($chip['label']) ?> <span aria-hidden="true">&times;</span>
           </a>
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
-  </div>
-  <div class="product-grid row g-4 mt-1">
-    <?php foreach ($books as $b): ?>
-      <?php $cover = !empty($b['cover']) ? $b['cover'] : $fallbackCover; ?>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
-        <div class="card book-card flex-fill h-100">
-          <img loading="lazy" src="<?= htmlspecialchars($cover) ?>" class="book-card-img card-img-top" alt="Cover of <?= htmlspecialchars($b['title'] ?? 'Book') ?> by <?= htmlspecialchars($b['author'] ?? 'Unknown') ?>">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title book-title mb-1"><?= htmlspecialchars($b['title']) ?></h5>
-            <p class="card-text text-muted small mb-2 book-author"><?= htmlspecialchars($b['author']) ?></p>
-            <p class="mt-auto mb-2"><strong><?= format_price($b['price']) ?></strong></p>
-            <a href="book.php?id=<?= urlencode($b['id']) ?>" class="btn btn-outline-primary btn-sm w-100">View Details</a>
+
+    <div class="catalog-list">
+      <?php foreach ($books as $b): ?>
+        <?php
+          $cover = !empty($b['cover']) ? $b['cover'] : $fallbackCover;
+          $coverUrl = resolve_cover_url($cover);
+          $bookUrl = 'book.php?id=' . urlencode($b['id']);
+          $rating = isset($b['rating']) ? (float)$b['rating'] : 0;
+          $ratingCount = isset($b['rating_count']) ? (int)$b['rating_count'] : 0;
+          $hasStock = array_key_exists('stock', $b);
+          $stockValue = $hasStock ? (int)$b['stock'] : null;
+        ?>
+        <article class="catalog-card">
+          <a class="catalog-card-media" href="<?= htmlspecialchars($bookUrl) ?>">
+            <img loading="lazy" src="<?= htmlspecialchars($coverUrl) ?>" alt="Cover of <?= htmlspecialchars($b['title'] ?? 'Book') ?> by <?= htmlspecialchars($b['author'] ?? 'Unknown') ?>">
+          </a>
+          <div class="catalog-card-body">
+            <h3 class="catalog-card-title">
+              <a href="<?= htmlspecialchars($bookUrl) ?>"><?= htmlspecialchars($b['title']) ?></a>
+            </h3>
+            <p class="catalog-card-author"><?= htmlspecialchars($b['author']) ?></p>
+            <?php if ($rating > 0 || $hasStock): ?>
+              <div class="catalog-card-meta">
+                <?php if ($rating > 0): ?>
+                  <span class="catalog-rating">Rating <?= number_format($rating, 1) ?><?= $ratingCount > 0 ? ' (' . number_format($ratingCount) . ')' : '' ?></span>
+                <?php endif; ?>
+                <?php if ($hasStock): ?>
+                  <span class="catalog-badge <?= $stockValue > 0 ? 'in-stock' : 'out-stock' ?>"><?= $stockValue > 0 ? 'In stock' : 'Out of stock' ?></span>
+                <?php endif; ?>
+              </div>
+            <?php endif; ?>
+            <div class="catalog-card-footer">
+              <span class="catalog-card-price"><?= format_price($b['price']) ?></span>
+              <a href="<?= htmlspecialchars($bookUrl) ?>" class="catalog-card-cta">View details</a>
+            </div>
           </div>
-        </div>
-      </div>
-    <?php endforeach; ?>
-    <?php if (empty($books)): ?>
-      <div class="col-12 py-5">
-        <div class="books-empty">
+        </article>
+      <?php endforeach; ?>
+
+      <?php if (empty($books)): ?>
+        <div class="catalog-empty">
           <h4>No books found</h4>
           <p>Try adjusting your search or filters, or browse all books.</p>
-          <div class="books-empty-actions">
-            <a class="btn btn-outline-primary" href="books.php">Browse all books</a>
-          </div>
+          <a class="btn btn-outline-primary" href="books.php">Browse all books</a>
         </div>
-      </div>
+      <?php endif; ?>
+    </div>
+
+    <?php if ($pages > 1): ?>
+      <?php
+        $baseParams = [];
+        if ($search !== '') $baseParams['q'] = $search;
+        if ($minPrice !== '') $baseParams['min_price'] = $minPrice;
+        if ($maxPrice !== '') $baseParams['max_price'] = $maxPrice;
+        if ($sort !== '') $baseParams['sort'] = $sort;
+        if ($perPage !== 8) $baseParams['per_page'] = $perPage;
+      ?>
+      <nav aria-label="Books pagination" class="catalog-pagination">
+        <ul class="pagination justify-content-center">
+          <?php for ($p = 1; $p <= $pages; $p++): ?>
+            <li class="page-item<?= $p===$page? ' active':'' ?>">
+              <?php $qs = http_build_query(array_merge($baseParams, ['page' => $p])); ?>
+              <a class="page-link" href="books.php<?= $qs ? '?' . $qs : '' ?>"><?= $p ?></a>
+            </li>
+          <?php endfor; ?>
+        </ul>
+      </nav>
     <?php endif; ?>
   </div>
-  <?php if ($pages > 1): ?>
-    <?php
-      $baseParams = [];
-      if ($search !== '') $baseParams['q'] = $search;
-      if ($minPrice !== '') $baseParams['min_price'] = $minPrice;
-      if ($maxPrice !== '') $baseParams['max_price'] = $maxPrice;
-      if ($sort !== '') $baseParams['sort'] = $sort;
-      if ($perPage !== 8) $baseParams['per_page'] = $perPage;
-    ?>
-    <nav aria-label="Books pagination" class="mt-4">
-      <ul class="pagination justify-content-center">
-        <?php for ($p = 1; $p <= $pages; $p++): ?>
-          <li class="page-item<?= $p===$page? ' active':'' ?>">
-            <?php $qs = http_build_query(array_merge($baseParams, ['page' => $p])); ?>
-            <a class="page-link" href="books.php<?= $qs ? '?' . $qs : '' ?>"><?= $p ?></a>
-          </li>
-        <?php endfor; ?>
-      </ul>
-    </nav>
-  <?php endif; ?>
-</div>
+</section>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
