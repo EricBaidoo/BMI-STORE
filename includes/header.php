@@ -18,13 +18,7 @@ $metaDescription = $meta_description ?? 'Buy Christian books and resources at ' 
 // current script name for active link highlighting
 $currentScript = basename($_SERVER['SCRIPT_NAME'] ?? '');
 // asset base path (root of project) so admin pages resolve assets correctly
-$scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');
-$assetPrefix = $scriptDir;
-if ($assetPrefix === '' || $assetPrefix === '.') $assetPrefix = '';
-if (basename($assetPrefix) === 'admin') {
-  $assetPrefix = dirname($assetPrefix);
-}
-if ($assetPrefix === '\\' || $assetPrefix === '.') $assetPrefix = '';
+$assetPrefix = asset_prefix();
 ?>
 <!-- Skip link for keyboard users -->
 <a class="skip-link visually-hidden-focusable" href="#main">Skip to main content</a>

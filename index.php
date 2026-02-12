@@ -136,41 +136,6 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- Testimonials Section -->
-<section class="testimonials-section">
-  <div class="container section-content">
-    <h2 class="section-title text-center">What Our Readers Say</h2>
-    <div class="row justify-content-center">
-      <!-- Testimonial 1 -->
-      <div class="col-md-4">
-        <div class="card testimonial-card h-100 text-center p-3">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Testimonial 1" class="testimonial-photo rounded-circle mb-2 mx-auto">
-          <blockquote class="testimonial-quote mb-2">“The books and teachings have truly transformed my faith journey. I feel more connected and inspired every day.”</blockquote>
-          <div class="testimonial-name fw-bold">Grace Mensah</div>
-          <div class="testimonial-role text-muted">Accra, Ghana</div>
-        </div>
-      </div>
-      <!-- Testimonial 2 -->
-      <div class="col-md-4">
-        <div class="card testimonial-card h-100 text-center p-3">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Testimonial 2" class="testimonial-photo rounded-circle mb-2 mx-auto">
-          <blockquote class="testimonial-quote mb-2">“Rev. Yalley’s messages are practical and uplifting. My family and I have grown so much in our walk with God.”</blockquote>
-          <div class="testimonial-name fw-bold">Kwame Boateng</div>
-          <div class="testimonial-role text-muted">Kumasi, Ghana</div>
-        </div>
-      </div>
-      <!-- Testimonial 3 -->
-      <div class="col-md-4">
-        <div class="card testimonial-card h-100 text-center p-3">
-          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Testimonial 3" class="testimonial-photo rounded-circle mb-2 mx-auto">
-          <blockquote class="testimonial-quote mb-2">“A wonderful community and powerful resources. I always look forward to the next book and sermon!”</blockquote>
-          <div class="testimonial-name fw-bold">Akosua Owusu</div>
-          <div class="testimonial-role text-muted">Takoradi, Ghana</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 </main>

@@ -45,6 +45,33 @@ function format_price($p) {
     return $currency . ' ' . number_format($value, 2);
 }
 
+function asset_prefix() {
+    $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');
+    $assetPrefix = $scriptDir;
+    if ($assetPrefix === '' || $assetPrefix === '.') $assetPrefix = '';
+    if (basename($assetPrefix) === 'admin') {
+        $assetPrefix = dirname($assetPrefix);
+    }
+    if ($assetPrefix === '\\' || $assetPrefix === '.') $assetPrefix = '';
+    return $assetPrefix;
+}
+
+function resolve_cover_url($cover) {
+    $cover = trim((string)$cover);
+    if ($cover === '') return '';
+    $lower = strtolower($cover);
+    if (strpos($lower, 'http://') === 0 || strpos($lower, 'https://') === 0 || strpos($lower, '//') === 0) {
+        return $cover;
+    }
+    if (strpos($lower, 'data:') === 0 || strpos($lower, '/') === 0) {
+        return $cover;
+    }
+    if (strpos($lower, 'assets/') === 0) {
+        return asset_prefix() . '/' . $cover;
+    }
+    return $cover;
+}
+
 function cart_add($book_id, $qty = 1) {
     if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
     if (!isset($_SESSION['cart'][$book_id])) $_SESSION['cart'][$book_id] = 0;

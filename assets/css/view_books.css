@@ -1,0 +1,150 @@
+/* Per-page styles for admin/view_books.php */
+.admin-books-page {
+  max-width: 1150px;
+  margin: 2.5rem auto 3rem;
+  padding: 0 1.25rem;
+}
+
+.admin-books-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 64, 175, 0.92));
+  color: #ffffff;
+  border-radius: 1.4rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 1.25rem 2.5rem rgba(15, 23, 42, 0.2);
+  margin-bottom: 1.75rem;
+}
+
+.admin-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
+  color: rgba(226, 232, 240, 0.7);
+  margin-bottom: 0.4rem;
+}
+
+.admin-books-header h1 {
+  font-size: 2.3rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.admin-subtitle {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.admin-books-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.admin-books-actions .btn {
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  font-weight: 600;
+}
+
+.admin-books-actions .btn-primary {
+  background: #ffffff;
+  color: #0f172a;
+  border: none;
+  box-shadow: 0 0.75rem 1.6rem rgba(15, 23, 42, 0.18);
+}
+
+.admin-books-actions .btn-primary:hover {
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+
+.admin-table-wrap {
+  background: #f8fafc;
+  border-radius: 0.9rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.admin-table {
+  margin-bottom: 0;
+}
+
+.admin-table thead th {
+  background: #f1f5f9;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table tbody td {
+  background: #ffffff;
+  vertical-align: middle;
+}
+
+.admin-book-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-book-thumb {
+  width: 48px;
+  height: 64px;
+  border-radius: 0.65rem;
+  object-fit: contain;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.admin-book-thumb-fallback {
+  display: grid;
+  place-items: center;
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.admin-book-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.admin-book-meta {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.admin-empty {
+  padding: 1.5rem;
+  color: #64748b;
+  background: #f8fafc;
+  border-radius: 0.9rem;
+  border: 1px dashed #e2e8f0;
+}
+
+@media (max-width: 991.98px) {
+  .admin-books-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .admin-books-header {
+    padding: 1.6rem;
+  }
+  .admin-books-header h1 {
+    font-size: 1.8rem;
+  }
+  .admin-books-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .admin-books-actions .btn {
+    width: 100%;
+  }
+}

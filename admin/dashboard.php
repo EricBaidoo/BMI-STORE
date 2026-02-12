@@ -65,6 +65,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h4>Quick actions</h4>
         <div class="admin-action-list">
           <a href="add_book.php"><i class="bi bi-journal-plus"></i> Add new book</a>
+          <a href="view_books.php"><i class="bi bi-collection"></i> View all books</a>
           <a href="view_orders.php"><i class="bi bi-receipt"></i> Review latest orders</a>
           <a href="view_subscribers.php"><i class="bi bi-envelope-check"></i> View subscribers</a>
           <a href="change_password.php"><i class="bi bi-shield-lock"></i> Change admin password</a>
@@ -92,5 +93,6 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
       </div>
     </div>
+
   </section>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
