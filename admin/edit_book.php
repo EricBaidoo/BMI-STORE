@@ -27,7 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $values['stock'] = $_POST['stock'] ?? '';
   $values['cover'] = trim($_POST['cover'] ?? '');
   $values['category'] = trim($_POST['category'] ?? '');
-  $values['description'] = trim($_POST['description'] ?? '');
+  $descriptionInput = trim($_POST['description'] ?? '');
+  $values['description'] = function_exists('mb_strtolower')
+    ? mb_strtolower($descriptionInput, 'UTF-8')
+    : strtolower($descriptionInput);
   $values['featured'] = isset($_POST['featured']);
 
   $title = $values['title'];

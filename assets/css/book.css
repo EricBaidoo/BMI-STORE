@@ -35,6 +35,7 @@
 
 .book-hero-title h1 {
 	font-family: "Merriweather", serif;
+	text-transform: capitalize;
 	font-size: 2.4rem;
 	font-weight: 700;
 	margin: 0;
@@ -146,6 +147,7 @@
 
 .book-title {
 	font-family: "Merriweather", serif;
+	text-transform: capitalize;
 	font-size: 1.8rem;
 	margin: 0 0 0.4rem 0;
 }
@@ -207,6 +209,7 @@
 	font-size: 1rem;
 	line-height: 1.8;
 	color: var(--book-text);
+	text-transform: lowercase;
 	margin: 0;
 }
 

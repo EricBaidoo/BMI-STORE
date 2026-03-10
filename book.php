@@ -10,6 +10,10 @@ if (!$book) {
 $coverUrl = resolve_cover_url($book['cover'] ?? '');
 $coverUrl = $coverUrl ?: 'assets/images/books%20main.png';
 $stockCount = (int)($book['stock'] ?? 0);
+$bookDescription = (string)($book['description'] ?? '');
+$bookDescriptionLower = function_exists('mb_strtolower')
+  ? mb_strtolower($bookDescription, 'UTF-8')
+  : strtolower($bookDescription);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $qty = max(1, (int)($_POST['qty'] ?? 1));
     cart_add($book['id'], $qty);
@@ -67,7 +71,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <div class="book-about">
           <h3>About this book</h3>
-          <p><?= nl2br(htmlspecialchars($book['description'])) ?></p>
+          <p><?= nl2br(htmlspecialchars($bookDescriptionLower)) ?></p>
         </div>
 
         <div class="book-details">

@@ -191,6 +191,7 @@
   font-size: 0.98rem;
   margin: 0;
   font-weight: 600;
+  text-transform: capitalize;
   color: #0f1111;
   line-height: 1.4;
 }
@@ -259,14 +260,31 @@
 }
 
 .catalog-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid #a88734;
+  background: #f0c14b;
+  color: #111111;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #007185;
+  font-weight: 700;
   text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
 
 .catalog-card-cta:hover {
-  color: #c45500;
+  background: #e3b73e;
+  border-color: #8f752f;
+  color: #111111;
+  transform: translateY(-1px);
+}
+
+.catalog-card-cta:focus-visible {
+  outline: 3px solid rgba(168, 135, 52, 0.25);
+  outline-offset: 2px;
 }
 
 .catalog-empty {
