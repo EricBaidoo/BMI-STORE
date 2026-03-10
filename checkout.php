@@ -8,24 +8,56 @@ if (empty($items)) {
   exit;
 }
 
+// --- Paystack fee gross-up (customer bears the charge) ---
+// Paystack Ghana: 1.95% + GHS 0.25, capped at GHS 2,000
+function paystack_grossup(float $amount): array {
+  $grossed = ($amount + 0.25) / (1 - 0.0195);
+  $fee     = round($grossed - $amount, 2);
+  // Apply Paystack's GHS 2,000 fee cap
+  if ($fee > 2000) {
+    $fee     = 2000;
+    $grossed = $amount + $fee;
+  }
+  return [
+    'subtotal' => round($amount, 2),
+    'fee'      => $fee,
+    'total'    => round($grossed, 2),
+  ];
+}
+$cart_subtotal = cart_total();
+$price_breakdown = paystack_grossup($cart_subtotal);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $_SESSION['last_order'] = [
-    'items' => $items,
-    'total' => cart_total(),
-    'name' => $_POST['name'] ?? '',
-    'email' => $_POST['email'] ?? '',
+    'items'    => $items,
+    'subtotal' => $price_breakdown['subtotal'],
+    'fee'      => $price_breakdown['fee'],
+    'total'    => $price_breakdown['total'],
+    'name'     => $_POST['name'] ?? '',
+    'email'    => $_POST['email'] ?? '',
   ];
   
-  $amount = cart_total();
-  $user_name = $_POST['name'] ?? '';
+  // Send the grossed-up total so Paystack deducts its fee and the bookstore nets the subtotal
+  $amount     = $price_breakdown['total'];
+  $user_name  = $_POST['name'] ?? '';
   $user_email = $_POST['email'] ?? '';
   
-  $config = require __DIR__ . '/config.php';
-  $secret = $config['bmipay_secret'] ?? 'changeme';
-  $data = $user_name . '|' . $user_email . '|' . $amount;
+  $config     = require __DIR__ . '/config.php';
+  $secret     = $config['bmipay_secret'] ?? 'changeme';
+  $subaccount = $config['paystack_subaccount'] ?? '';
+  $bmipay_base_url = $config['bmipay_base_url'] ?? 'http://localhost/BMIPAY/index.php';
+  // Include subaccount in the HMAC so BMIPAY can verify it was not tampered with
+  $data = $user_name . '|' . $user_email . '|' . $amount . '|' . $subaccount;
   $hash = hash_hmac('sha256', $data, $secret);
-  
-  $bmipay_url = "http://localhost/BMIPAY/index.php?user_name=" . urlencode($user_name) . "&user_email=" . urlencode($user_email) . "&amount={$amount}&hash={$hash}";
+
+  $query = http_build_query([
+    'user_name' => $user_name,
+    'user_email' => $user_email,
+    'amount' => $amount,
+    'subaccount' => $subaccount,
+    'hash' => $hash,
+  ]);
+  $bmipay_url = rtrim($bmipay_base_url, '?') . '?' . $query;
   
   unset($_SESSION['cart']);
   header('Location: ' . $bmipay_url);
@@ -94,11 +126,15 @@ require_once __DIR__ . '/includes/header.php';
             <div class="checkout-summary-total">
               <div class="checkout-summary-row">
                 <span>Subtotal (<?= count($items) ?> <?= count($items) === 1 ? 'item' : 'items' ?>):</span>
-                <span><?= format_price(cart_total()) ?></span>
+                <span><?= format_price($price_breakdown['subtotal']) ?></span>
+              </div>
+              <div class="checkout-summary-row">
+                <span>Transaction fee:</span>
+                <span><?= format_price($price_breakdown['fee']) ?></span>
               </div>
               <div class="checkout-summary-grand">
                 <span>Order Total:</span>
-                <span><?= format_price(cart_total()) ?></span>
+                <span><?= format_price($price_breakdown['total']) ?></span>
               </div>
             </div>
           </div>

@@ -15,6 +15,10 @@ require_once __DIR__ . '/includes/header.php';
       <li><?= htmlspecialchars($it['book']['title']) ?> x <?= $it['qty'] ?> — <?= format_price($it['book']['price'] * $it['qty']) ?></li>
     <?php endforeach; ?>
   </ul>
-  <p><strong>Total: <?= format_price($order['total']) ?></strong></p>
+  <p>Subtotal: <?= format_price($order['subtotal'] ?? $order['total']) ?></p>
+  <?php if (!empty($order['fee'])): ?>
+  <p>Transaction fee: <?= format_price($order['fee']) ?></p>
+  <?php endif; ?>
+  <p><strong>Total paid: <?= format_price($order['total']) ?></strong></p>
   <a class="btn btn-primary" href="books.php">Continue shopping</a>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
