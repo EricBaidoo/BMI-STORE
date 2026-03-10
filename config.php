@@ -43,9 +43,9 @@ return [
     // Secret key for BMI Pay HMAC signing. Must match BMIPAY's BMI_PAY_SECRET constant
     'bmipay_secret' => 'mevaGieB1sMI/lThG2Ztwl1vM/M5HnPDjdX/UWHsHZd9SxFBjyd5UaqokXN71xrV',
     // BMIPAY endpoint used by checkout redirection.
-    // Local example: http://localhost/BMIPAY/index.php
-    // Hosted example: https://your-bmipay-domain.com/index.php
-    'bmipay_base_url' => 'https://pay.bridgeministriesintl.org/',
+    // Local example: http://localhost/BMIPAY/paystack.php
+    // Hosted example: https://your-bmipay-domain.com/paystack.php
+    'bmipay_base_url' => 'https://pay.bridgeministriesintl.org/paystack.php',
     // Paystack subaccount code for the bookstore.
     // Create one at: https://dashboard.paystack.com/#/subaccounts
     // Format: ACCT_xxxxxxxxxxxxxxxx

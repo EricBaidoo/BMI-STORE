@@ -45,9 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $config     = require __DIR__ . '/config.php';
   $secret     = $config['bmipay_secret'] ?? 'changeme';
   $subaccount = $config['paystack_subaccount'] ?? '';
-  $bmipay_base_url = $config['bmipay_base_url'] ?? 'http://localhost/BMIPAY/index.php';
+  $bmipay_base_url = $config['bmipay_base_url'] ?? 'http://localhost/BMIPAY/paystack.php';
+  $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+  $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+  $basePath = rtrim(str_replace('\\', '/', dirname($_SERVER['PHP_SELF'] ?? '/checkout.php')), '/');
+  $return_url = $scheme . '://' . $host . ($basePath ? $basePath : '') . '/success.php';
   // Include subaccount in the HMAC so BMIPAY can verify it was not tampered with
-  $data = $user_name . '|' . $user_email . '|' . $amount . '|' . $subaccount;
+  // BMIPAY expects: email|name|amount|subaccount
+  $data = $user_email . '|' . $user_name . '|' . $amount . '|' . $subaccount;
   $hash = hash_hmac('sha256', $data, $secret);
 
   $query = http_build_query([
@@ -55,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'user_email' => $user_email,
     'amount' => $amount,
     'subaccount' => $subaccount,
+    'return_url' => $return_url,
     'hash' => $hash,
   ]);
   $bmipay_url = rtrim($bmipay_base_url, '?') . '?' . $query;

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@600;700&display=swap');
+
 /*
 	Main stylesheet — foundation for the site.
 	Color palette: white and blue.
@@ -49,12 +51,24 @@ body {
 /* -------------------------------
 	 Typography
 	 ------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
 
 html { font-size: 16px; }
-body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; line-height:1.45; }
+body,
+button,
+input,
+select,
+textarea {
+	font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+body { line-height:1.45; }
 
-h1, h2, h3, h4, h5 { color: #0f172a; margin-top:0; margin-bottom:.5rem; font-weight:700; }
+h1, h2, h3, h4, h5, h6 {
+	color: #0f172a;
+	margin-top:0;
+	margin-bottom:.5rem;
+	font-weight:700;
+	font-family: 'Merriweather', Georgia, 'Times New Roman', serif !important;
+}
 h1 { font-size: 2rem; }
 h2 { font-size: 1.5rem; }
 h3 { font-size: 1.25rem; }
@@ -87,7 +101,6 @@ a:hover { color: var(--color-primary-dark); text-decoration: underline; }
 
 /* Spotlight (featured book) */
 .spotlight { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding: 1.25rem; border-radius: 10px; }
-.spotlight h2 { margin-bottom: .25rem; }
 .featured-cover { width:100%; height: auto; max-height: 360px; object-fit: cover; }
 
 /* Category tiles */

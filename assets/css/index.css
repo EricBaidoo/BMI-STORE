@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@600;700&display=swap');
 
 .home-page {
   background: #f3f3f3;
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 /* Hero Section */
 .home-hero {
@@ -28,7 +28,7 @@
 }
 
 .home-hero h1 {
-  font-family: "Playfair Display", serif;
+  font-family: "Merriweather", serif;
   font-size: 3rem;
   font-weight: 800;
   color: #0f1111;
@@ -136,7 +136,7 @@
 }
 
 .home-section-header h2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Merriweather", serif;
   font-size: 2.2rem;
   font-weight: 700;
   color: #0f1111;
@@ -268,7 +268,7 @@
 }
 
 .home-author-content h2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Merriweather", serif;
   font-size: 2rem;
   font-weight: 700;
   color: #0f1111;
